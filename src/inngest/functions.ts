@@ -1,75 +1,86 @@
-// run this command in the terminal to open up inngest cli : npx inngest-cli@latest dev
-import { z } from "zod"
-import Sandbox from "@e2b/code-interpreter"
-import { createAgent, createNetwork, createTool, openai } from "@inngest/agent-kit"
+import { z } from "zod";
+import Sandbox from "@e2b/code-interpreter";
+import {
+  createAgent,
+  createNetwork,
+  createTool,
+  openai,
+  type Tool,
+} from "@inngest/agent-kit";
 
-import { PROMPT } from "./prompt"
-import { inngest } from "./client"
-import { getSandbox, lastAssistantTextMessageContent } from "./utils"
+import { PROMPT } from "./prompt";
+import { inngest } from "./client";
+import { getSandbox, lastAssistantTextMessageContent } from "./utils";
+import prisma from "@/lib/prisma";
 
-export const helloWorld = inngest.createFunction(
-  { id: "hello-world" },
-  { event: "test/hello.world" },
+interface AgentState {
+  summary: string;
+  files: { [path: string]: string };
+}
+
+export const codeAgentFunction = inngest.createFunction(
+  { id: "code-agent" },
+  { event: "code-agent/run" },
   async ({ event, step }) => {
     const sandboxId = await step.run("get-sandbox-id", async () => {
-      const sandbox = await Sandbox.create("yjwnm2zu3bj6qbkbck3z")
+      const sandbox = await Sandbox.create("yjwnm2zu3bj6qbkbck3z");
 
-      return sandbox.sandboxId
-    })
+      return sandbox.sandboxId;
+    });
 
-    const codeAgent = createAgent({
+    const codeAgent = createAgent<AgentState>({
       name: "Coding Agent",
-      description: "An expert coding agent working in a sandboxed Next.js environment",
+      description:
+        "An expert coding agent working in a sandboxed Next.js environment",
       system: PROMPT,
       model: openai({
         model: "gpt-4o",
-        // defaultParameters: {
-        //   temperature: 0.1
-        // }
+        defaultParameters: {
+          temperature: 0.1,
+        },
       }),
       tools: [
         createTool({
           name: "terminal",
           description: "Run a command in the terminal",
-          parameters: z.object({
-            command: z.string()
-          }),
+          parameters: z.object({ command: z.string() }),
           handler: async ({ command }, { step }) => {
             return await step?.run("terminal", async () => {
-              const buffers = { stdout: "", stderr: "" }
+              const buffers = { stdout: "", stderr: "" };
 
               try {
-                const sandbox = await getSandbox(sandboxId)
+                const sandbox = await getSandbox(sandboxId);
                 const result = await sandbox.commands.run(command, {
                   onStderr: (data: string) => {
-                    buffers.stderr += data
+                    buffers.stderr += data;
                   },
                   onStdout: (data: string) => {
-                    buffers.stdout += data
+                    buffers.stdout += data;
                   },
-                })
-                return result.stdout
+                });
+                return result.stdout;
               } catch (error) {
-                const errorMessage = `Command failed: ${error} \nstdout ${buffers.stdout} \nstderr ${buffers.stderr}`
-                console.error(errorMessage)
-                return errorMessage
+                const errorMessage = `Command failed: ${error} \nstdout ${buffers.stdout} \nstderr ${buffers.stderr}`;
+                console.error(errorMessage);
+                return errorMessage;
               }
-            })
+            });
           },
         }),
         createTool({
           name: "createOrUpdateFiles",
           description: "Create or update files in the sandbox",
-          // TODO: Fix this type error later on
           parameters: z.object({
             files: z.array(
               z.object({
                 path: z.string(),
                 content: z.string(),
               })
-            ), 
+            ),
           }),
-          handler: async ({ files }, { step, network }) => {
+          //todo: find a solution for asserting the type 
+          // handler: async ({ files }, { step, network } : Tool.Options<AgentState> ) => {
+          handler: async ({ files }, { step, network } ) => {
             const newFiles = await step?.run(
               "createOrUpdateFiles",
               async () => {
@@ -78,28 +89,28 @@ export const helloWorld = inngest.createFunction(
                   files.map((f: { path: string }) => f.path)
                 );
                 try {
-                  const updatedFiles = network.state.data.files || {}
-                  const sandbox = await getSandbox(sandboxId)
+                  const updatedFiles = network.state.data.files || {};
+                  const sandbox = await getSandbox(sandboxId);
                   for (const file of files) {
-                    await sandbox.files.write(file.path, file.content)
-                    updatedFiles[file.path] = file.content
+                    await sandbox.files.write(file.path, file.content);
+                    updatedFiles[file.path] = file.content;
                   }
-                  return updatedFiles
+                  return updatedFiles;
                 } catch (error) {
-                  return "Error updating files: " + error
+                  return "Error updating files: " + error;
                 }
-              })
-            
+              }
+            );
+
             if (typeof newFiles === "object") {
               // Todo: Fix this type error later on
-              network.state.data.files = newFiles
+              network.state.data.files = newFiles;
             }
           },
         }),
         createTool({
           name: "readFiles",
           description: "Read files from the sandbox",
-          // TODO: Fix this type error later on
           parameters: z.object({
             files: z.array(z.string()),
           }),
@@ -107,38 +118,37 @@ export const helloWorld = inngest.createFunction(
             console.log("readFiles <", files);
             return await step?.run("readFiles", async () => {
               try {
-                const sandbox = await getSandbox(sandboxId)
-                const contents = []
+                const sandbox = await getSandbox(sandboxId);
+                const contents = [];
                 for (const file of files) {
-                  const content = await sandbox.files.read(file)
-                  contents.push({ path: file, content })
+                  const content = await sandbox.files.read(file);
+                  contents.push({ path: file, content });
                 }
-                return JSON.stringify(contents)
+                return JSON.stringify(contents);
               } catch (error) {
-                return "Error reading files: " + error
+                return "Error reading files: " + error;
               }
-            })
-          }
-        })
+            });
+          },
+        }),
       ],
       lifecycle: {
         onResponse: async ({ result, network }) => {
-          const lastAssistantMessageText = lastAssistantTextMessageContent(result)
-
+          const lastAssistantMessageText =
+            lastAssistantTextMessageContent(result);
 
           if (lastAssistantMessageText && network) {
             if (lastAssistantMessageText.includes("<task_summary>")) {
-              network.state.data.summary = lastAssistantMessageText
+              network.state.data.summary = lastAssistantMessageText;
             }
           }
 
-          return result
-        }
-      }
+          return result;
+        },
+      },
+    });
 
-    })
-
-    const network = createNetwork({
+    const network = createNetwork<AgentState>({
       name: "coding-agent-network",
       agents: [codeAgent],
       maxIter: 15,
@@ -149,25 +159,55 @@ export const helloWorld = inngest.createFunction(
           return;
         }
 
-        return codeAgent
-      }
-    })
+        return codeAgent;
+      },
+    });
 
-    const result = await network.run(event.data.value)
-    // const result = await network.run("create a simple calculator app")
+    const result = await network.run(event.data.value);
+
+    const isError =
+      !result.state.data.summary ||
+      Object.keys(result.state.data.files || {}).length === 0;
 
     const sandboxUrl = await step.run("get-sandbox-url", async () => {
-      const sandbox = await getSandbox(sandboxId)
-      const host = sandbox.getHost(3000)
+      const sandbox = await getSandbox(sandboxId);
+      const host = sandbox.getHost(3000);
 
-      return `https://${host}`
-    })
+      return `https://${host}`;
+    });
 
-    return { 
+    await step.run("save-result", async () => {
+      if (isError) {
+        return await prisma.message.create({
+          data: {
+            content: "Something went wrong. Please try again.",
+            role: "ASSISTANT",
+            type: "ERROR",
+          },
+        });
+      }
+
+      return await prisma.message.create({
+        data: {
+          content: result.state.data.summary,
+          role: "ASSISTANT",
+          type: "RESULT",
+          fragment: {
+            create: {
+              sandboxUrl: sandboxUrl,
+              title: "Fragment",
+              files: result.state.data.files,
+            },
+          },
+        },
+      });
+    });
+
+    return {
       url: sandboxUrl,
       title: "Fragment",
       files: result.state.data.files,
-      summary: result.state.data.summary
-     }
+      summary: result.state.data.summary,
+    };
   }
-)
+);
