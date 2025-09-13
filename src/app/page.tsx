@@ -1,38 +1,39 @@
-"use client"
-import { useMutation, useQuery } from "@tanstack/react-query";
+"use client";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { useTRPC } from "@/trpc/client";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const [value, setValue] = useState<string>("")
-  const trpc = useTRPC()
-  const {data: messages} = useQuery(trpc.messages.getMany.queryOptions())
-  const createMessage = useMutation(trpc.messages.create.mutationOptions({
-    onSuccess: () => { 
-      alert("Message created")
-    }
-  }))
-  return (
-    <div>
-      <input
-        type="text"
-        placeholder="Enter text"
-        className="border rounded-lg px-4 py-2"
-        onChange={(e) => setValue(e.target.value)}
-      />
-      <Button
-        className="bg-white text-black rounded-lg px-4 py-2 mt-4"
-        onClick={() => createMessage.mutate({value})}
-      >
-        Invoke Function
-      </Button>
-      <br />
-      <br />
-      <br />
+  const router = useRouter()
+  const [value, setValue] = useState<string>("");
 
-      {JSON.stringify(messages)}
+  const trpc = useTRPC();
+  const createProject = useMutation(
+    trpc.projects.create.mutationOptions({
+      onError: (error) => {
+        toast.error(error.message);
+      },
+      onSuccess: (data) => {
+        router.push(`/projects/${data.id}`)
+      }
+    })
+  );
+  return (
+    <div className="h-screen w-screen flex items-center justify-center">
+      <div className="max-w-screen mx-auto flex items-center flex-col gap-y-4 justify-center">
+        <Input value={value} onChange={(e) => setValue(e.target.value)} />
+        <Button
+          onClick={() => createProject.mutate({ value: value })}
+          disabled={createProject.isPending}
+        >
+          Submit
+        </Button> 
+      </div>
     </div>
   );
 }
