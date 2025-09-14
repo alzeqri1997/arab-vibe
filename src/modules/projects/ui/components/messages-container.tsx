@@ -53,7 +53,7 @@ const MessagesContainer = ({ projectId }: Props) => {
         </div>
       </div>
       <div className="relative p-3 pt-1">
-        <div className="absolute -top-6 left-0 h-6 bg-gradient-to-b from-transparent to-background pointer-events-none " />
+        <div className="absolute -top-6 left-0 h-6 bg-gradient-to-b from-transparent to-background pointer-events-none w-full " />
         <MessageForm projectId={projectId} />
       </div>
     </div>
