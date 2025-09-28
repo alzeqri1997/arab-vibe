@@ -9,6 +9,7 @@ import TextAreaAutoSize from "react-textarea-autosize";
 import { ArrowUpIcon, Loader2Icon } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useClerk } from "@clerk/nextjs";
 
 import { useTRPC } from "@/trpc/client";
 import { Form, FormField } from "@/components/ui/form";
@@ -26,6 +27,7 @@ const formSchema = z.object({
 const ProjectForm = () => {
   const router = useRouter();
   const trpc = useTRPC();
+  const clerk = useClerk()
   const queryClient = useQueryClient();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,8 +44,11 @@ const ProjectForm = () => {
         // TODO: Invalidate usage status
       },
       onError: (error) => {
-        // TODO: Redirect to pricing page if specific error
         toast.error(error.message);
+
+        if (error.data?.code === "UNAUTHORIZED") {
+          clerk.openSignIn()
+        }
       },
     })
   );
