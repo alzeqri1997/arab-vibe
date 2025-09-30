@@ -3,18 +3,20 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import z from "zod";
-import TextAreaAutoSize from 'react-textarea-autosize'
+import TextAreaAutoSize from "react-textarea-autosize";
 import { ArrowUpIcon, Loader2Icon } from "lucide-react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useTRPC } from "@/trpc/client";
 import { Form, FormField } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Usage } from "./usage";
+import { useRouter } from "next/navigation";
 
 interface Props {
   projectId: string;
-} 
+}
 
 const formSchema = z.object({
   value: z
@@ -24,8 +26,12 @@ const formSchema = z.object({
 });
 
 const MessageForm = ({ projectId }: Props) => {
-  const trpc = useTRPC()
-  const queryClient = useQueryClient()
+  const trpc = useTRPC();
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const { data: usage } = useQuery(trpc.usage.status.queryOptions());
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,35 +39,45 @@ const MessageForm = ({ projectId }: Props) => {
     },
   });
 
-  const createMessage = useMutation(trpc.messages.create.mutationOptions({
-    onSuccess: () => {
-      form.reset();
-      queryClient.invalidateQueries(
-        trpc.messages.getMany.queryOptions({ projectId })
-      );
-      // TODO: Invalidate usage status
-    },
-    onError: (error) => {
-      // TODO: Redirect to pricing page if specific error
-      toast.error(error.message)
-    }
-  }))
+  const createMessage = useMutation(
+    trpc.messages.create.mutationOptions({
+      onSuccess: () => {
+        form.reset();
+        queryClient.invalidateQueries(
+          trpc.messages.getMany.queryOptions({ projectId })
+        );
+        queryClient.invalidateQueries(trpc.usage.status.queryOptions());
+      },
+      onError: (error) => {
+        toast.error(error.message);
+
+        if (error.data?.code === "TOO_MANY_REQUESTS") {
+          router.push("/pricing");
+        }
+      },
+    })
+  );
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     await createMessage.mutateAsync({
       value: values.value,
-      projectId
-    })
+      projectId,
+    });
   };
 
-  const [isFocused, setIsFocused] = useState<boolean>(false)
+  const [isFocused, setIsFocused] = useState<boolean>(false);
   const isPending = createMessage.isPending;
-  const isButtonDisabled = isPending || !form.formState.isValid
-  const showUsage = false
-
+  const isButtonDisabled = isPending || !form.formState.isValid;
+  const showUsage = !!usage;
 
   return (
     <Form {...form}>
+      {showUsage && (
+        <Usage
+          points={usage.remainingPoints}
+          msBeforeNext={usage.msBeforeNext}
+        />
+      )}
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn(
@@ -77,7 +93,7 @@ const MessageForm = ({ projectId }: Props) => {
             <TextAreaAutoSize
               {...field}
               disabled={isPending}
-              onFocus={()=> setIsFocused(true)}
+              onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               minRows={2}
               maxRows={8}
@@ -86,7 +102,7 @@ const MessageForm = ({ projectId }: Props) => {
               onKeyDown={(e) => {
                 if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
                   e.preventDefault();
-                  form.handleSubmit(onSubmit)(e)
+                  form.handleSubmit(onSubmit)(e);
                 }
               }}
             />
@@ -110,9 +126,8 @@ const MessageForm = ({ projectId }: Props) => {
             {isPending ? (
               <Loader2Icon className="size-4 animate-spin" />
             ) : (
-                <ArrowUpIcon/>
-            )  }
-
+              <ArrowUpIcon />
+            )}
           </Button>
         </div>
       </form>
