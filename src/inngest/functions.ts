@@ -3,15 +3,18 @@ import Sandbox from "@e2b/code-interpreter";
 import {
   createAgent,
   createNetwork,
+  createState,
   createTool,
+  Message,
   openai,
   type Tool,
 } from "@inngest/agent-kit";
 
-import { PROMPT } from "./prompt";
+import { FRAGMENT_TITLE_PROMPT, PROMPT, RESPONSE_PROMPT } from "./prompt";
 import { inngest } from "./client";
 import { getSandbox, lastAssistantTextMessageContent } from "./utils";
 import prisma from "@/lib/prisma";
+import { parseAgentOutput } from "@/lib/utils";
 
 interface AgentState {
   summary: string;
@@ -114,9 +117,9 @@ export const codeAgentFunction = inngest.createFunction(
               })
             ),
           }),
-          //todo: find a solution for asserting the type 
+          //todo: find a solution for asserting the type
           // handler: async ({ files }, { step, network } : Tool.Options<AgentState> ) => {
-          handler: async ({ files }, { step, network } ) => {
+          handler: async ({ files }, { step, network }) => {
             const newFiles = await step?.run(
               "createOrUpdateFiles",
               async () => {
@@ -202,6 +205,31 @@ export const codeAgentFunction = inngest.createFunction(
 
     const result = await network.run(event.data.value, { state });
 
+    const fragmentTitleGenerator = createAgent({
+      name: "fragment-title-generator",
+      description: "A fragment title generator",
+      system: FRAGMENT_TITLE_PROMPT,
+      model: openai({
+        model: "gpt-4o",
+      }),
+    });
+
+    const responseGenerator = createAgent({
+      name: "response-generator",
+      description: "A response Generator",
+      system: RESPONSE_PROMPT,
+      model: openai({
+        model: "gpt-4o",
+      }),
+    });
+
+    const { output: fragmentTitleOutput } = await fragmentTitleGenerator.run(
+      result.state.data.summary
+    );
+
+    const { output: responseOutput } = await responseGenerator.run(
+      result.state.data.summary
+    );
 
     const isError =
       !result.state.data.summary ||
@@ -229,13 +257,13 @@ export const codeAgentFunction = inngest.createFunction(
       return await prisma.message.create({
         data: {
           projectId: event.data.projectId,
-          content: result.state.data.summary,
+          content: parseAgentOutput(responseOutput),
           role: "ASSISTANT",
           type: "RESULT",
           fragment: {
             create: {
               sandboxUrl: sandboxUrl,
-              title: "Fragment",
+              title: parseAgentOutput(fragmentTitleOutput),
               files: result.state.data.files,
             },
           },
