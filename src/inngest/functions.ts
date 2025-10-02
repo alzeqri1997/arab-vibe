@@ -15,6 +15,7 @@ import { inngest } from "./client";
 import { getSandbox, lastAssistantTextMessageContent } from "./utils";
 import prisma from "@/lib/prisma";
 import { parseAgentOutput } from "@/lib/utils";
+import { SANDBOX_TIMEOUT } from "./types";
 
 interface AgentState {
   summary: string;
@@ -27,7 +28,7 @@ export const codeAgentFunction = inngest.createFunction(
   async ({ event, step }) => {
     const sandboxId = await step.run("get-sandbox-id", async () => {
       const sandbox = await Sandbox.create("yjwnm2zu3bj6qbkbck3z");
-
+      await sandbox.setTimeout(SANDBOX_TIMEOUT) // 30 minutes
       return sandbox.sandboxId;
     });
 
