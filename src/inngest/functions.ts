@@ -28,7 +28,7 @@ export const codeAgentFunction = inngest.createFunction(
   async ({ event, step }) => {
     const sandboxId = await step.run("get-sandbox-id", async () => {
       const sandbox = await Sandbox.create("yjwnm2zu3bj6qbkbck3z");
-      await sandbox.setTimeout(SANDBOX_TIMEOUT) // 30 minutes
+      await sandbox.setTimeout(SANDBOX_TIMEOUT); // 30 minutes
       return sandbox.sandboxId;
     });
 
@@ -42,8 +42,9 @@ export const codeAgentFunction = inngest.createFunction(
             projectId: event.data.projectId,
           },
           orderBy: {
-            createdAt: "desc", // TODO: Change to "asc" if AI does not understand what the latest message is
+            createdAt: "desc",
           },
+          take: 5, // get only the last 5 messages
         });
 
         for (const message of messages) {
@@ -54,7 +55,7 @@ export const codeAgentFunction = inngest.createFunction(
           });
         }
 
-        return formattedMessages;
+        return formattedMessages.reverse();
       }
     );
 
