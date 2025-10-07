@@ -1,0 +1,11 @@
+{
+  "home": {
+    "heading": "Build something with Arab Vibe",
+    "sub-heading": "Create apps and websites by chatting with AI"
+  },
+  "project": {
+    "form": {
+      "placeholder": "What would you like to build?"
+    }
+  }
+}

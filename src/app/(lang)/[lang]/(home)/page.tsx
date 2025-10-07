@@ -1,8 +1,10 @@
 import ProjectForm from "@/modules/home/ui/components/project-form";
 import ProjectsList from "@/modules/home/ui/components/projects-list";
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 
-export default function Home() {
+export default async function Home() {
+  const t = await getTranslations("home")
   return (
     <div className="flex flex-col max-w-5xl mx-auto w-full">
       <section className="space-y-6 py-[16vh] 2xl:py-48">
@@ -16,10 +18,10 @@ export default function Home() {
           />
         </div>
         <h1 className="text-2xl md:text-5xl font-bold text-center">
-          Build something with Arab Vibe
+          {t('heading')}
         </h1>
         <p className="text-lg md:text-muted-foreground text-center">
-          Create apps and websites by chatting with AI
+          {t('sub-heading')}
         </p>
         <div className="max-w-3xl mx-auto w-full">
           <ProjectForm />
