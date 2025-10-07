@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Usage } from "./usage";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface Props {
   projectId: string;
@@ -26,6 +27,7 @@ const formSchema = z.object({
 });
 
 const MessageForm = ({ projectId }: Props) => {
+  const t = useTranslations("project.form")
   const trpc = useTRPC();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -98,7 +100,7 @@ const MessageForm = ({ projectId }: Props) => {
               minRows={2}
               maxRows={8}
               className="pt-4 resize-none border-none w-full outline-none bg-transparent"
-              placeholder="What would you like to build?"
+              placeholder={t("placeholder")}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
                   e.preventDefault();
@@ -114,7 +116,7 @@ const MessageForm = ({ projectId }: Props) => {
             <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
               <span>&#8984;</span>Enter
             </kbd>
-            &nbsp; to submit
+            &nbsp; {t("to-submit")}
           </div>
           <Button
             disabled={isButtonDisabled}

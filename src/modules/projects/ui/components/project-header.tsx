@@ -19,6 +19,7 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
+import { useTranslations } from "next-intl";
 
 
 interface Props {
@@ -32,6 +33,7 @@ const ProjectHeader = ({ projectId }: Props) => {
   );
 
   const { setTheme, theme } = useTheme();
+  const t = useTranslations("project.header")
 
   return (
     <header className="p-2 flex justify-between items-center border-b">
@@ -51,26 +53,26 @@ const ProjectHeader = ({ projectId }: Props) => {
           <DropdownMenuItem asChild>
             <Link href={"/"}>
               <ChevronLeftIcon />
-              <span>Go To Dashboard</span>
+              <span> {t("go-to-dashboard")} </span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className="gap-2">
               <SunMoonIcon className="size-4 text-muted-foreground" />
-              <span>Appearance</span>
+              <span> {t("appearance")} </span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
                 <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
                   <DropdownMenuRadioItem value="light">
-                    <span>Light</span>
+                    <span>{t("light")}</span>
                   </DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="dark">
-                    <span>Dark</span>
+                    <span>{t("dark")}</span>
                   </DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="system">
-                    <span>System </span>
+                    <span>{t("system")}</span>
                   </DropdownMenuRadioItem>
                 </DropdownMenuRadioGroup>
               </DropdownMenuSubContent>

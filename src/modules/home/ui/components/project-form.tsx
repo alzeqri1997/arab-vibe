@@ -10,12 +10,13 @@ import { ArrowUpIcon, Loader2Icon } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useClerk } from "@clerk/nextjs";
+import { useTranslations } from "next-intl";
 
 import { useTRPC } from "@/trpc/client";
 import { Form, FormField } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { PROJECT_TEMPLATES } from "@/app/(home)/constants";
+import { PROJECT_TEMPLATES } from "@/app/(lang)/[lang]/(home)/constants";
 
 const formSchema = z.object({
   value: z
@@ -29,6 +30,8 @@ const ProjectForm = () => {
   const trpc = useTRPC();
   const clerk = useClerk()
   const queryClient = useQueryClient();
+  const t = useTranslations("project")
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -92,7 +95,7 @@ const ProjectForm = () => {
                 minRows={2}
                 maxRows={8}
                 className="pt-4 resize-none border-none w-full outline-none bg-transparent"
-                placeholder="What would you like to build?"
+                placeholder={t('form.placeholder')}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
                     e.preventDefault();
@@ -108,7 +111,7 @@ const ProjectForm = () => {
               <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
                 <span>&#8984;</span>Enter
               </kbd>
-              &nbsp; to submit
+              &nbsp; {t("form.to-submit")}
             </div>
             <Button
               disabled={isButtonDisabled}

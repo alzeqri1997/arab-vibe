@@ -25,7 +25,7 @@ const navbar = () => {
         </Link>
         <SignedOut>
           <div className="flex gap-2">
-            <SignUpButton>
+            <SignUpButton >
               <Button variant={"outline"} size={"sm"}>
                 Sign up
               </Button>

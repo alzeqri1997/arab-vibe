@@ -5,6 +5,7 @@ import { ChevronRightIcon, Code2Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { Fragment, MessageRole, MessageType } from "@/generated/prisma";
+import { useTranslations } from "next-intl";
 
 interface UserMessageProps {
   content: string;
@@ -31,6 +32,7 @@ const FragmentCard = ({
   isActiveFragment,
   onFragmentClick,
 }: FragmentCardProps) => {
+  const t = useTranslations("project.message-container.card.fragment")
   return (
     <button
       className={cn(
@@ -45,7 +47,7 @@ const FragmentCard = ({
         <span className="text-sm font-medium line-clamp-1">
           {fragment.title}
         </span>
-        <span className="text-sm">Preview</span>
+        <span className="text-sm"> {t('preview')} </span>
       </div>
       <div className="flex items-center justify-center mt-0.5">
         <ChevronRightIcon className="size-4" />

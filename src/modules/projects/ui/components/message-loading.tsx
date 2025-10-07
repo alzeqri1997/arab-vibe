@@ -1,17 +1,19 @@
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const ShimmerMessages = () => {
+  const t = useTranslations("project.message-container.shimmer-messages");
   const messages = [
-    "Thinking...",
-    "Loading...",
-    "Generating...",
-    "Analyzing your request...",
-    "Building your website...",
-    "Crafting components...",
-    "Optimizing final touches",
-    "Adding final touches...",
-    "Almost ready...",
+    t("thinking"),
+    t("loading"),
+    t("generating"),
+    t("analyzing-your-request"),
+    t("building-your-website"),
+    t("crafting-components"),
+    t("optimizing-final-touches"),
+    t("adding-final-touches"),
+    t("almost-ready"),
   ];
 
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);

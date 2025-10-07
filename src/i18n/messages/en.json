@@ -1,11 +1,44 @@
 {
   "home": {
     "heading": "Build something with Arab Vibe",
-    "sub-heading": "Create apps and websites by chatting with AI"
+    "sub-heading": "Create apps and websites by chatting with AI",
+    "projects": {
+      "previous-projects": "Previous Projects"
+    }
   },
   "project": {
     "form": {
-      "placeholder": "What would you like to build?"
+      "placeholder": "What would you like to build?",
+      "to-submit": "to submit"
+    },
+    "header": {
+      "go-to-dashboard": "Go to Dashboard",
+      "appearance": "Appearance",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "system"
+    },
+    "message-container": {
+      "card": {
+        "fragment": {
+          "preview": "Preview"
+        }
+      },
+      "shimmer-messages": {
+        "thinking": "Thinking",
+        "loading": "Loading",
+        "generating": "generating",
+        "analyzing-your-request": "Analyzing your request...",
+        "building-your-website": "Building your website...",
+        "crafting-components": "Crafting components...",
+        "optimizing-final-touches": "Optimizing final touches",
+        "adding-final-touches": "Adding final touches...",
+        "almost-ready": "Almost ready..."
+      }
+    },
+    "usage": {
+      "credits-remaining": "credits remaining",
+      "rest-in": "Rests in"
     }
   }
 }

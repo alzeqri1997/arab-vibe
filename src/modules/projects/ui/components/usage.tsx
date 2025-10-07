@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { CrownIcon } from "lucide-react";
 import { formatDuration, intervalToDuration } from "date-fns";
+import { ar, enUS } from "date-fns/locale";
 
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@clerk/nextjs";
 import { useMemo } from "react";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 
 interface Props {
   points: number;
@@ -12,6 +15,8 @@ interface Props {
 }
 
 export const Usage = ({ points, msBeforeNext }: Props) => {
+  const t = useTranslations("project.usage");
+  const { lang } = useParams()
   const { has } = useAuth();
   const hasProAccess = has?.({ plan: "pro" });
   const resetTime = useMemo(() => {
@@ -21,7 +26,7 @@ export const Usage = ({ points, msBeforeNext }: Props) => {
           start: new Date(),
           end: new Date(Date.now() + msBeforeNext),
         }),
-        { format: ["months", "days", "hours"] }
+        { format: ["months", "days", "hours"], locale: lang === "ar" ? ar : enUS}
       );
     } catch (error) {
       console.error("Error formatting duration", error);
@@ -33,9 +38,9 @@ export const Usage = ({ points, msBeforeNext }: Props) => {
       <div className="flex items-center gap-x-2">
         <div>
           <p className="text-sm">
-            {points} {hasProAccess ? "" : "free"} credits remaining
+            {points} {hasProAccess ? "" : "free"} {t("credits-remaining")}
           </p>
-          <p className="text-xs text-muted-foreground">Rests in {resetTime}</p>
+          <p className="text-xs text-muted-foreground"> {t('rest-in')} {resetTime}</p>
         </div>
         {!hasProAccess && (
           <Button asChild size={"sm"} variant={"tertiary"} className="ml-auto">
