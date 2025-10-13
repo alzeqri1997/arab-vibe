@@ -17,6 +17,7 @@ import ProjectHeader from "../components/project-header";
 import FragmentWeb from "../components/fragment-web";
 import UserControl from "@/components/user-control";
 import { useAuth } from "@clerk/nextjs";
+import { MessageContainerSkeleton, ProjectHeaderSkeleton } from "@/components/skeleton-loaders";
 
 interface Props {
   projectId: string;
@@ -37,10 +38,10 @@ const ProjectView = ({ projectId }: Props) => {
           minSize={20}
           className="flex flex-col min-h-0"
         >
-          <Suspense fallback={<p>loading project </p>}>
+          <Suspense fallback={<ProjectHeaderSkeleton />}>
             <ProjectHeader projectId={projectId} />
           </Suspense>
-          <Suspense fallback={<p>loading messages only</p>}>
+          <Suspense fallback={<MessageContainerSkeleton/>}>
             <MessagesContainer
               activeFragment={activeFragment}
               setActiveFragment={setActiveFragment}
