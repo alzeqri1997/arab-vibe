@@ -50,7 +50,7 @@ export default async function RootLayout({ children, params }: Props) {
       }}
     >
       <TRPCReactProvider>
-        <html dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang} suppressHydrationWarning>
+        <html dir={lang === "ar" ? "rtl" : "ltr"} lang={lang} suppressHydrationWarning>
           {/* <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         > */}

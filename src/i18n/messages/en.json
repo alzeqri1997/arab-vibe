@@ -3,7 +3,12 @@
     "heading": "Build something with Arab Vibe",
     "sub-heading": "Create apps and websites by chatting with AI",
     "projects": {
-      "previous-projects": "Previous Projects"
+      "previous-projects": "Previous Projects",
+      "no-projects-found": "No projects found"
+    },
+    "navbar": {
+      "sign-up": "Sign Up",
+      "sign-in": "Sign In"
     }
   },
   "project": {

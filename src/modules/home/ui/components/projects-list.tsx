@@ -10,6 +10,7 @@ import { useTRPC } from "@/trpc/client";
 import { Button } from "@/components/ui/button";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { ar, enUS } from "date-fns/locale";
 
 const ProjectList = () => {
   const { lang } = useParams();
@@ -29,7 +30,7 @@ const ProjectList = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         {projects?.length === 0 && (
           <div className="col-span-full text-center">
-            <p className="text-sm text-muted-foreground">No projects found</p>
+            <p className="text-sm text-muted-foreground">{t('projects.no-projects')}</p>
           </div>
         )}
         {projects?.map((project) => (
@@ -52,6 +53,7 @@ const ProjectList = () => {
                   <p className="text-sm text-muted-foreground">
                     {formatDistanceToNow(project.updatedAt, {
                       addSuffix: true,
+                      locale: lang === "ar" ? ar : enUS
                     })}
                   </p>
                 </div>

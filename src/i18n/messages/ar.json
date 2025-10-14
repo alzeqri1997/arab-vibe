@@ -1,5 +1,49 @@
 {
   "home": {
-    "greeting": "يامرحبا ومسهلا"
+    "heading": "قم بإنشاء تطبيقات ومواقع إلكترونية بواسطة الذكاء الاصطناعي",
+    "sub-heading": "ابنِ شيئًا مع Arab Vibe",
+    "projects": {
+      "previous-projects": "المشاريع السابقة",
+      "no-projects-found": "لا توجد مشاريع"
+    },
+    "navbar": {
+      "sign-up": "إنشاء حساب",
+      "sign-in": "تسجيل الدخول"
+    }
+  },
+  "project": {
+    "form": {
+      "placeholder": "ماذا تريد أن تبني؟",
+      "to-submit": "إرسال"
+    },
+    "header": {
+      "go-to-dashboard": "الذهاب إلى لوحة التحكم",
+      "appearance": "المظهر",
+      "light": "الفاتح",
+      "dark": "المظلم",
+      "system": "النظام"
+    },
+    "message-container": {
+      "card": {
+        "fragment": {
+          "preview": "معاينة"
+        }
+      },
+      "shimmer-messages": {
+        "thinking": "جاري التفكير",
+        "loading": "جاري التحميل",
+        "generating": "جاري الإنشاء",
+        "analyzing-your-request": "جاري تحليل طلبك...",
+        "building-your-website": "جاري بناء موقعك...",
+        "crafting-components": "جاري تصميم المكونات...",
+        "optimizing-final-touches": "جاري تحسين اللمسات النهائية",
+        "adding-final-touches": "جاري إضافة اللمسات النهائية...",
+        "almost-ready": "جاهز تقريبا..."
+      }
+    },
+    "usage": {
+      "credits-remaining": "رصيد متبقي",
+      "rest-in": "يتجدد في"
+    }
   }
 }
