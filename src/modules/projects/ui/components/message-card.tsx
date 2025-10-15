@@ -50,7 +50,7 @@ const FragmentCard = ({
         <span className="text-sm"> {t('preview')} </span>
       </div>
       <div className="flex items-center justify-center mt-0.5">
-        <ChevronRightIcon className="size-4" />
+        <ChevronRightIcon className="size-4 rtl:scale-x-[-1]" />
       </div>
     </button>
   );

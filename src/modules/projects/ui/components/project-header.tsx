@@ -51,15 +51,17 @@ const ProjectHeader = ({ projectId }: Props) => {
           <DropdownMenuContent side="bottom" align="start">
             <DropdownMenuItem asChild>
               <Link href={"/"}>
-                <ChevronLeftIcon />
-                <span> {t("go-to-dashboard")} </span>
+                <ChevronLeftIcon className="rtl:scale-x-[-1] rtl:order-2" />
+                <span className="rtl:order-1"> {t("go-to-dashboard")} </span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuSub>
               <DropdownMenuSubTrigger className="gap-2">
-                <SunMoonIcon className="size-4 text-muted-foreground" />
-                <span> {t("appearance")} </span>
+                <div className="flex items-center gap-2 rtl:order-1 rtl:[&~.lucide.lucide-chevron-right]:mr-auto rtl:[&~.lucide.lucide-chevron-right]:ml-0 rtl:[&~.lucide.lucide-chevron-right]:scale-[-1]">
+                  <SunMoonIcon className="size-4 text-muted-foreground" />
+                  <span> {t("appearance")} </span>
+                </div>  
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>

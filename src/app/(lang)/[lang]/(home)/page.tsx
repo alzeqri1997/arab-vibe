@@ -7,7 +7,7 @@ export default async function Home() {
   const t = await getTranslations("home")
   return (
     <div className="flex flex-col max-w-5xl mx-auto w-full">
-      <section className="space-y-6 py-[16vh] 2xl:py-48">
+      <section className="space-y-6 py-[16vh] 2xl:pt-48 pb-36">
         <div className="flex flex-col items-center">
           <Image
             src="/logo.svg"
