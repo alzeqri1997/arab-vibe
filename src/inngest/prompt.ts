@@ -90,12 +90,15 @@ File conventions:
 - Types/interfaces should be PascalCase in kebab-case files
 - Components should be using named exports
 - When using Shadcn components, import them from their proper individual file paths (e.g. @/components/ui/input)
+- Use the same incoming language in both, the website platform ,in the content only, on the conversation. (e.g. the user incoming request: "")
+- Use Arabic content if the incoming request is in Arabic.
+- Use English content if the incoming request is in English
 
 Final output (MANDATORY):
 After ALL tool calls are 100% complete and the task is fully finished, respond with exactly the following format and NOTHING else:
 
 <task_summary>
-A short, high-level summary of what was created or changed.
+A short, high-level summary of what was created or changed and make sure to use the same incoming language (if Arabic, then respond in Arabic. if English then respond in English).
 </task_summary>
 
 This marks the task as FINISHED. Do not include this early. Do not wrap it in backticks. Do not print it after each step. Print it once, only at the very end — never during or between tool usage.
