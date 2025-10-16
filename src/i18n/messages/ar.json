@@ -45,5 +45,9 @@
       "credits-remaining": "رصيد متبقي",
       "rest-in": "يتجدد في"
     }
+  },
+  "pricing":{
+    "title": "الأسعار",
+    "description": "اختر الخطة التي تناسب احتياجاتك"
   }
 }

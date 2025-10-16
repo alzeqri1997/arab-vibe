@@ -5,9 +5,11 @@ import { PricingTable } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 
 import { useCurrentTheme } from "@/hooks/use-current-theme";
+import { useTranslations } from "next-intl";
 
 const Page = () => {
   const currentTheme = useCurrentTheme()
+  const t = useTranslations("pricing");
 
   return (
     <div className="flex flex-col max-w-3xl mx-auto w-full">
@@ -21,9 +23,9 @@ const Page = () => {
             className="hidden md:block"
           />
         </div>
-        <h1 className="text-1 md:text-center">Pricing</h1>
+        <h1 className="text-1 md:text-center">{t("title")}</h1>
         <p className="text-muted-foreground text-center text-sm md:text-base">
-          Choose the plan that fits your needs
+          {t("description")}
         </p>
         <PricingTable
           appearance={{
