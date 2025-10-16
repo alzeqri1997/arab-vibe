@@ -18,7 +18,7 @@ export const projectsRouter = createTRPCRouter({
       const existingProject = await prisma.project.findUnique({
         where: {
           id: input.id,
-          userId: ctx.auth.userId
+          userId: ctx.auth.userId,
         },
       });
 
@@ -31,11 +31,11 @@ export const projectsRouter = createTRPCRouter({
 
       return existingProject;
     }),
-  getMany: protectedProcedure.query(async ({ctx}) => {
+  getMany: protectedProcedure.query(async ({ ctx }) => {
     const projects = await prisma.project.findMany({
       where: {
-        userId: ctx.auth.userId
-      }, 
+        userId: ctx.auth.userId,
+      },
       orderBy: {
         updatedAt: "desc",
       },
@@ -54,26 +54,24 @@ export const projectsRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       try {
-              await consumeCredits();
-            } catch (error) {
-              if (error instanceof Error) {
-                throw new TRPCError({
-                  code: "BAD_REQUEST",
-                  message: "Something went wrong",
-                });
-              } else {
-                throw new TRPCError({
-                  code: "TOO_MANY_REQUESTS",
-                  message: "You have run out of credits",
-                });
-              }
-            }
+        await consumeCredits();
+      } catch (error) {
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Something went wrong",
+          });
+        } else {
+          throw new TRPCError({
+            code: "TOO_MANY_REQUESTS",
+            message: "You have run out of credits",
+          });
+        }
+      }
       const createdProject = await prisma.project.create({
         data: {
           userId: ctx.auth.userId,
-          name: generateSlug(2, {
-            format: "kebab",
-          }),
+          name: "New Project",
           messages: {
             create: {
               content: input.value,
@@ -92,5 +90,24 @@ export const projectsRouter = createTRPCRouter({
         },
       });
       return createdProject;
+    }),
+  updateTitle: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const updateProjectTitle = await prisma.project.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.title,
+        },
+      });
+
+      return updateProjectTitle;
     }),
 });

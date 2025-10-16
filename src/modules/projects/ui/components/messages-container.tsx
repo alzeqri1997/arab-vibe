@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, useMutation } from "@tanstack/react-query";
 
 import { useTRPC } from "@/trpc/client";
 import { Fragment } from "@/generated/prisma";
@@ -21,27 +21,37 @@ const MessagesContainer = ({
   const trpc = useTRPC();
   const bottomRef = useRef<HTMLDivElement>(null);
   const lastAssistantMessageRef = useRef<string | null>(null);
+  const mutation = useMutation(trpc.projects.updateTitle.mutationOptions());
 
   const { data: messages } = useSuspenseQuery(
-    trpc.messages.getMany.queryOptions({
-      projectId,
-    }, {
-      // Temporary life message update
-      refetchInterval: 5000, // Refetch every 5 seconds
-    })
+    trpc.messages.getMany.queryOptions(
+      {
+        projectId,
+      },
+      {
+        // Temporary life message update
+        refetchInterval: 5000, // Refetch every 5 seconds
+      }
+    )
   );
 
   useEffect(() => {
     const lastAssistantMessage = messages.findLast(
       (message) => message.role === "ASSISTANT"
-    )
-    
+    );
+
     if (
       lastAssistantMessage &&
       lastAssistantMessage.id !== lastAssistantMessageRef.current
     ) {
       setActiveFragment(lastAssistantMessage.fragment);
       lastAssistantMessageRef.current = lastAssistantMessage.id;
+
+      
+      mutation.mutate({
+        id: projectId,
+        title: lastAssistantMessage.fragment?.title || "New Project",
+      });
     }
   }, [messages, setActiveFragment]);
 
