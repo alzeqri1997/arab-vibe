@@ -7,16 +7,7 @@ export default async function Home() {
   const t = await getTranslations("home")
   return (
     <div className="flex flex-col max-w-5xl mx-auto w-full">
-      <section className="space-y-6 py-[16vh] 2xl:pt-48 pb-36">
-        <div className="flex flex-col items-center">
-          <Image
-            src="/logo.svg"
-            alt="Arab Vibe"
-            width={50}
-            height={50}
-            className="hidden sm:block"
-          />
-        </div>
+      <section className="space-y-6 py-[16vh] 2xl:pt-48 pb-14">
         <h1 className="text-2xl md:text-5xl font-bold text-center">
           {t('heading')}
         </h1>

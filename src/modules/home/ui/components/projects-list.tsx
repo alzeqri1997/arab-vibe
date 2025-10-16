@@ -30,7 +30,7 @@ const ProjectList = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         {projects?.length === 0 && (
           <div className="col-span-full text-center">
-            <p className="text-sm text-muted-foreground">{t('projects.no-projects')}</p>
+            <p className="text-sm text-muted-foreground">{t('projects.no-projects-found')}</p>
           </div>
         )}
         {projects?.map((project) => (

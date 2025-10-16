@@ -40,10 +40,9 @@ const navbar = () => {
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="">
+                <Button variant="outline" size="sm">
                   <Languages />
                   <span>{lang === "ar" ? "العربية" : "English"}</span>
-                  {/* <span>{lang === "ar" ? "English" : "العربية"}</span> */}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
