@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 // import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { enUS, arSA } from '@clerk/localizations'
 
 import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
@@ -43,6 +44,7 @@ export default async function RootLayout({ children, params }: Props) {
 
   return (
     <ClerkProvider
+      localization={lang === "ar" ? arSA : enUS}
       appearance={{
         variables: {
           colorPrimary: "#C96342",
