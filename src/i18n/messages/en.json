@@ -48,6 +48,9 @@
   },
   "pricing":{
     "title": "Pricing",
-    "description": "Choose the plan that fits your needs"
+    "description": "Choose the plan that fits your needs",
+    "note-title": "Note !",
+    "beta-note": "The platform is currently in beta. Pro plan features are not yet available.",
+    "continue": "Continue"
   }
 }
