@@ -16,7 +16,6 @@ import { useTRPC } from "@/trpc/client";
 import { Form, FormField } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { PROJECT_TEMPLATES } from "@/app/(lang)/[lang]/(home)/constants";
 
 const formSchema = z.object({
   value: z
@@ -31,7 +30,6 @@ const ProjectForm = () => {
   const clerk = useClerk()
   const queryClient = useQueryClient();
   const t = useTranslations("project")
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
