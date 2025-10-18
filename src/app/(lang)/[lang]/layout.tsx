@@ -10,10 +10,12 @@ import { TRPCReactProvider } from "@/trpc/client";
 import { Toaster } from "@/components/ui/sonner";
 import { routing } from "@/i18n/routing";
 
-
 export const metadata: Metadata = {
   title: "Arab Vibe",
   description: "Your AI-powered assistant for creating nextjs, shadcn projects.",
+  icons: {
+    icon: "/logo.svg",
+  }
 };
 
 interface Props {
