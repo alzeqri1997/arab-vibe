@@ -9,6 +9,7 @@ import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
 import { Toaster } from "@/components/ui/sonner";
 import { routing } from "@/i18n/routing";
+import { notoSansArabic } from "./fonts";
 
 export const metadata: Metadata = {
   title: "Arab Vibe",
@@ -49,7 +50,7 @@ export default async function RootLayout({ children, params }: Props) {
           suppressHydrationWarning
         >
           <body
-          className={`antialiased`}
+          className={`${notoSansArabic.className} antialiased`}
         >
             <NextIntlClientProvider>
               <ThemeProvider
