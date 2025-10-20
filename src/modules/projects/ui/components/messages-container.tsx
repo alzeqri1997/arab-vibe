@@ -53,7 +53,7 @@ const MessagesContainer = ({
         title: lastAssistantMessage.fragment?.title || "New Project",
       });
     }
-  }, [messages, setActiveFragment]);
+  }, [messages, setActiveFragment, mutation, projectId]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView();

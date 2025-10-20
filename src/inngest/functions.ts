@@ -7,7 +7,6 @@ import {
   createTool,
   Message,
   openai,
-  type Tool,
 } from "@inngest/agent-kit";
 
 import { FRAGMENT_TITLE_PROMPT, PROMPT, RESPONSE_PROMPT } from "./prompt";

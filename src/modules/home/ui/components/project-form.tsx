@@ -27,9 +27,9 @@ const formSchema = z.object({
 const ProjectForm = () => {
   const router = useRouter();
   const trpc = useTRPC();
-  const clerk = useClerk()
+  const clerk = useClerk();
   const queryClient = useQueryClient();
-  const t = useTranslations("project")
+  const t = useTranslations("project");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,7 +48,7 @@ const ProjectForm = () => {
         toast.error(error.message);
 
         if (error.data?.code === "UNAUTHORIZED") {
-          clerk.openSignIn()
+          clerk.openSignIn();
         }
         if (error.data?.code === "TOO_MANY_REQUESTS") {
           router.push("/pricing");
@@ -62,10 +62,6 @@ const ProjectForm = () => {
       value: values.value,
     });
   };
-
-  const onSelect = (value: string) => {
-    form.setValue("value", value, { shouldDirty: true, shouldTouch: true });
-   }
 
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const isPending = createProject.isPending;
@@ -93,7 +89,7 @@ const ProjectForm = () => {
                 minRows={2}
                 maxRows={8}
                 className="pt-4 resize-none border-none w-full outline-none bg-transparent"
-                placeholder={t('form.placeholder')}
+                placeholder={t("form.placeholder")}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
                     e.preventDefault();

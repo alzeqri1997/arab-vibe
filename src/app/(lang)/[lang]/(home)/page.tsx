@@ -1,7 +1,7 @@
+import { getTranslations } from "next-intl/server";
+
 import ProjectForm from "@/modules/home/ui/components/project-form";
 import ProjectsList from "@/modules/home/ui/components/projects-list";
-import Image from "next/image";
-import { getTranslations } from "next-intl/server";
 
 export default async function Home() {
   const t = await getTranslations("home")

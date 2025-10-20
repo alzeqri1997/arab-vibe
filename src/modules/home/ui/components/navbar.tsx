@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 import { useParams } from "next/navigation";
 import { Languages } from "lucide-react";
 
-const navbar = () => {
+const Navbar = () => {
   const isScrolled = useScroll();
   const t = useTranslations("home");
   const { lang } = useParams();
@@ -79,4 +79,4 @@ const navbar = () => {
   );
 };
 
-export default navbar;
+export default Navbar;
