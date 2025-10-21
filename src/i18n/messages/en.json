@@ -21,7 +21,8 @@
       "appearance": "Appearance",
       "light": "Light",
       "dark": "Dark",
-      "system": "system"
+      "system": "system",
+      "upgrade": "Upgrade"
     },
     "message-container": {
       "card": {

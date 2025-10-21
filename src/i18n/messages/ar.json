@@ -21,7 +21,8 @@
       "appearance": "المظهر",
       "light": "الفاتح",
       "dark": "المظلم",
-      "system": "النظام"
+      "system": "النظام",
+      "upgrade": "الترقية"
     },
     "message-container": {
       "card": {

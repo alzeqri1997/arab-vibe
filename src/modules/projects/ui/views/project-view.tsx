@@ -18,6 +18,7 @@ import FragmentWeb from "../components/fragment-web";
 import UserControl from "@/components/user-control";
 import { useAuth } from "@clerk/nextjs";
 import { MessageContainerSkeleton, ProjectHeaderSkeleton } from "@/components/skeleton-loaders";
+import { useTranslations } from "next-intl";
 
 interface Props {
   projectId: string;
@@ -29,6 +30,7 @@ const ProjectView = ({ projectId }: Props) => {
 
   const [activeFragment, setActiveFragment] = useState<Fragment | null>(null);
   const [tabState, setTabState] = useState<"preview" | "code">("preview");
+  const t = useTranslations("project");
 
   return (
     <div className="h-screen">
@@ -70,7 +72,7 @@ const ProjectView = ({ projectId }: Props) => {
                 {!hasProAccess && (
                   <Button asChild size="sm" variant="tertiary">
                     <Link href="/pricing">
-                      <CrownIcon /> Upgrade
+                      <CrownIcon /> {t("header.upgrade")}
                     </Link>
                   </Button>
                 )}
