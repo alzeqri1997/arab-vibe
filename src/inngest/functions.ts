@@ -9,7 +9,7 @@ import {
   openai,
 } from "@inngest/agent-kit";
 
-import { FRAGMENT_TITLE_PROMPT, PROMPT, RESPONSE_PROMPT } from "./prompt";
+import { PROMPT, RESPONSE_PROMPT } from "./prompt";
 import { inngest } from "./client";
 import { getSandbox, lastAssistantTextMessageContent } from "./utils";
 import prisma from "@/lib/prisma";
@@ -206,27 +206,14 @@ export const codeAgentFunction = inngest.createFunction(
 
     const result = await network.run(event.data.value, { state });
 
-    const fragmentTitleGenerator = createAgent({
-      name: "fragment-title-generator",
-      description: "A fragment title generator",
-      system: FRAGMENT_TITLE_PROMPT,
-      model: openai({
-        model: "gpt-4o",
-      }),
-    });
-
     const responseGenerator = createAgent({
       name: "response-generator",
       description: "A response Generator",
       system: RESPONSE_PROMPT,
       model: openai({
-        model: "gpt-4o",
+        model: "gpt-4o-mini",
       }),
     });
-
-    const { output: fragmentTitleOutput } = await fragmentTitleGenerator.run(
-      result.state.data.summary
-    );
 
     const { output: responseOutput } = await responseGenerator.run(
       result.state.data.summary
@@ -264,7 +251,7 @@ export const codeAgentFunction = inngest.createFunction(
           fragment: {
             create: {
               sandboxUrl: sandboxUrl,
-              title: parseAgentOutput(fragmentTitleOutput),
+              title: 'Fragment',
               files: result.state.data.files,
             },
           },
