@@ -90,23 +90,4 @@ export const projectsRouter = createTRPCRouter({
       });
       return createdProject;
     }),
-  updateTitle: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        title: z.string(),
-      })
-    )
-    .mutation(async ({ input }) => {
-      const updateProjectTitle = await prisma.project.update({
-        where: {
-          id: input.id,
-        },
-        data: {
-          name: input.title,
-        },
-      });
-
-      return updateProjectTitle;
-    }),
 });

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useSuspenseQuery, useMutation } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { useTRPC } from "@/trpc/client";
 import { Fragment } from "@/generated/prisma";
@@ -21,7 +21,6 @@ const MessagesContainer = ({
   const trpc = useTRPC();
   const bottomRef = useRef<HTMLDivElement>(null);
   const lastAssistantMessageRef = useRef<string | null>(null);
-  const mutation = useMutation(trpc.projects.updateTitle.mutationOptions());
 
   const { data: messages } = useSuspenseQuery(
     trpc.messages.getMany.queryOptions(
@@ -46,14 +45,8 @@ const MessagesContainer = ({
     ) {
       setActiveFragment(lastAssistantMessage.fragment);
       lastAssistantMessageRef.current = lastAssistantMessage.id;
-
-      
-      mutation.mutate({
-        id: projectId,
-        title: lastAssistantMessage.fragment?.title || "New Project",
-      });
     }
-  }, [messages, setActiveFragment, mutation, projectId]);
+  }, [messages, setActiveFragment]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView();
