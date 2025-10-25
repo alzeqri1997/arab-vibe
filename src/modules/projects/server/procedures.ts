@@ -5,6 +5,7 @@ import { inngest } from "@/inngest/client";
 import prisma from "@/lib/prisma";
 import { TRPCError } from "@trpc/server";
 import { consumeCredits } from "@/lib/usage";
+import { generateProjectTitle } from "@/inngest/utils";
 
 export const projectsRouter = createTRPCRouter({
   getOne: protectedProcedure
@@ -67,10 +68,13 @@ export const projectsRouter = createTRPCRouter({
           });
         }
       }
+
+      const generatedProjectTitle = await generateProjectTitle(input.value);
+
       const createdProject = await prisma.project.create({
         data: {
           userId: ctx.auth.userId,
-          name: "New Project",
+          name: generatedProjectTitle,
           messages: {
             create: {
               content: input.value,
