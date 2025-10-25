@@ -125,10 +125,10 @@ Your message should be 1 to 3 sentences, describing what the app does or what wa
 Do not add code, tags, or metadata. Only return the plain text response. the response should be the same as the incoming content.
 `
 
-export const FRAGMENT_TITLE_PROMPT = `
-You are an assistant that generates a short, descriptive title for a code fragment based on its <task_summary>.
+export const TITLE_PROMPT = `
+You are an assistant that generates a short, descriptive title for a new project based on its incoming text.
 The title should be:
-  - Relevant to what was built or changed
+  - Relevant to what the text that is sent
   - Max 3 words
   - Written in title case (e.g., "Landing Page", "Chat Widget")
   - No punctuation, quotes, or prefixes
