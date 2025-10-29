@@ -8,21 +8,13 @@ import UserControl from "@/components/user-control";
 import { useScroll } from "@/hooks/use-scroll";
 import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 import { cn } from "@/lib/utils";
-import { useParams } from "next/navigation";
-import { Languages } from "lucide-react";
+import LanguageSwitchDropdown from "@/components/lang-switch-dropdown";
 
 const Navbar = () => {
   const isScrolled = useScroll();
   const t = useTranslations("home");
-  const { lang } = useParams();
 
   return (
     <nav
@@ -38,22 +30,7 @@ const Navbar = () => {
         </Link>
         <div className="flex items-center gap-2">
           <div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <Languages />
-                  <span>{lang === "ar" ? "العربية" : "English"}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem>
-                  <Link className="w-full" href={"/ar" }>العربية</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link className="w-full" href={"/en" }>English</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <LanguageSwitchDropdown />
           </div>
           <div className="border-l border-border h-6 mx-4" />
           <div>

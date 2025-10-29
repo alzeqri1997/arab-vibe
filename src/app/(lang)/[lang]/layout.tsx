@@ -10,6 +10,7 @@ import { TRPCReactProvider } from "@/trpc/client";
 import { Toaster } from "@/components/ui/sonner";
 import { routing } from "@/i18n/routing";
 import { notoSansArabic } from "./fonts";
+import { setRequestLocale } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "Arab Vibe",
@@ -18,6 +19,11 @@ export const metadata: Metadata = {
     icon: "/logo.svg",
   }
 };
+
+export async function generateStaticParams() {
+  // Return an array of params to statically generate each locale route at build time
+  return routing.locales.map((locale) => ({ lang: locale }));
+}
 
 interface Props {
   children: Readonly<React.ReactNode>;
@@ -30,9 +36,8 @@ export default async function RootLayout({ children, params }: Props) {
     notFound();
   }
 
-  // TODO: Try to use this function to get static routes. ( not sure yet, do a search for that )
   // Enable static rendering
-  /* setRequestLocale(lang) */
+  setRequestLocale(lang)
 
   return (
     <ClerkProvider
