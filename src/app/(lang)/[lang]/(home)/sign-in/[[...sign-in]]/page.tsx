@@ -13,8 +13,6 @@ export default function Page() {
     <div className="flex flex-col max-w-3xl mx-auto w-full">
       <section className="space-y-6 pt-[16vh] item-center mx-auto">
         <SignIn
-          fallbackRedirectUrl={`/${lang}`}
-          forceRedirectUrl={`/${lang}`}
           appearance={{
             baseTheme: currentTheme === "dark" ? dark : undefined,
             elements: {
