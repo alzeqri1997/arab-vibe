@@ -18,17 +18,17 @@ const LanguageSwitchDropdown = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm">
           <LanguagesIcon />
-          <span>{lang === "ar" ? "العربية" : "English"}</span>
+          <span>{lang === "ar" ? "English" : "العربية"}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem>
-          <Link prefetch={false} replace={true} className="w-full" href={"/ar"}>
+          <Link locale="ar" prefetch={false} replace={true} className="w-full" href={"/ar"}>
             العربية
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Link prefetch={false} replace={true} className="w-full" href={"/en"}>
+          <Link locale="en" prefetch={false} replace={true} className="w-full" href={"/en"}>
             English
           </Link>
         </DropdownMenuItem>
