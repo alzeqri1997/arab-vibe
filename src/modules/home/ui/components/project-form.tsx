@@ -8,7 +8,6 @@ import z from "zod";
 import TextAreaAutoSize from "react-textarea-autosize";
 import { ArrowUpIcon, Loader2Icon } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { useClerk } from "@clerk/nextjs";
 import { useTranslations } from "next-intl";
 
@@ -16,6 +15,7 @@ import { useTRPC } from "@/trpc/client";
 import { Form, FormField } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useRouter } from "@/i18n/navigation";
 
 const formSchema = z.object({
   value: z

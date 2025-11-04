@@ -1,5 +1,4 @@
 import { Languages as LanguagesIcon } from "lucide-react";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 
 import {
@@ -9,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { Link } from "@/i18n/navigation";
 
 const LanguageSwitchDropdown = () => {
   const { lang } = useParams();
@@ -23,12 +23,12 @@ const LanguageSwitchDropdown = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem>
-          <Link locale="ar" prefetch={false} replace={true} className="w-full" href={"/ar"}>
+          <Link locale="ar" prefetch={false} replace={true} className="w-full" href={"/"}>
             العربية
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Link locale="en" prefetch={false} replace={true} className="w-full" href={"/en"}>
+          <Link locale="en" prefetch={false} replace={true} className="w-full" href={"/"}>
             English
           </Link>
         </DropdownMenuItem>
