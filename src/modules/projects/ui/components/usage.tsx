@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { CrownIcon } from "lucide-react";
 import { formatDuration, intervalToDuration } from "date-fns";
 import { ar, enUS } from "date-fns/locale";
@@ -8,6 +7,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
+import { Link } from "@/i18n/navigation";
 
 interface Props {
   points: number;
@@ -44,8 +44,8 @@ export const Usage = ({ points, msBeforeNext }: Props) => {
         </div>
         {!hasProAccess && (
           <Button asChild size={"sm"} variant={"tertiary"} className="ml-auto">
-            <Link href={"/pricing"}>
-              <CrownIcon /> Upgrade
+            <Link locale={lang as string} href={"/pricing"}>
+              <CrownIcon /> {t("upgrade")}
             </Link>
           </Button>
         )}

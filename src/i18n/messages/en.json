@@ -44,7 +44,8 @@
     },
     "usage": {
       "credits-remaining": "credits remaining",
-      "rest-in": "Rests in"
+      "rest-in": "Rests in",
+      "upgrade": "Upgrade"
     }
   },
   "pricing":{
