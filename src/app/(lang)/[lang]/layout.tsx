@@ -41,6 +41,7 @@ export default async function RootLayout({ children, params }: Props) {
 
   return (
     <ClerkProvider
+      afterSignOutUrl={`/${lang}`}
       localization={lang === "ar" ? arSA : enUS}
       appearance={{
         variables: {

@@ -1,20 +1,21 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import Link from "next/link";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 
 import UserControl from "@/components/user-control";
 import { useScroll } from "@/hooks/use-scroll";
 import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import LanguageSwitchDropdown from "@/components/lang-switch-dropdown";
 
 const Navbar = () => {
   const isScrolled = useScroll();
   const t = useTranslations("home");
+  const { locale } = useParams() as { locale: string };
 
   return (
     <nav
@@ -24,7 +25,7 @@ const Navbar = () => {
       )}
     >
       <div className="max-w-5xl mx-auto w-full flex justify-between items-center">
-        <Link href={"/"} className="flex items-center gap-2">
+        <Link locale={locale} href={"/"} className="flex items-center gap-2">
           <Image src={"/logo.svg"} alt="Arab" width={24} height={24} />
           <span className="font-semibold text-lg">Arab Vibe</span>
         </Link>
@@ -36,14 +37,16 @@ const Navbar = () => {
           <div>
             <SignedOut>
               <div className="flex gap-2">
-                <SignUpButton>
-                  <Button variant={"outline"} size={"sm"}>
+                <Button asChild variant={"outline"} size={"sm"}>
+                  <Link locale={locale} href={"/sign-up"}>
                     {t("navbar.sign-up")}
-                  </Button>
-                </SignUpButton>
-                <SignInButton>
-                  <Button size={"sm"}>{t("navbar.sign-in")}</Button>
-                </SignInButton>
+                  </Link>
+                </Button>
+                <Button asChild size={"sm"}>
+                  <Link locale={locale} href={"/sign-in"}>
+                    {t("navbar.sign-in")}
+                  </Link>
+                </Button>
               </div>
             </SignedOut>
             <SignedIn>
