@@ -9,4 +9,4 @@ is a multilingual web application that allows users to generate websites through
 
 Tech Stack: Next.js, TypeScript, TailwindCSS, Clerk Auth, i18n, Prisma, TRPC, Inngest, E2B, PostgreSQL, Neon, Netlify
 
-## [Live Demo]([http://handlebarsjs.com/](https://arab-vibe.netlify.app/))
+## [Live Demo](https://arab-vibe.netlify.app/)
